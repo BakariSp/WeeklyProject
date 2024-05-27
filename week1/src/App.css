@@ -50,3 +50,10 @@
   -moz-user-select: none; /* For Firefox */
   -ms-user-select: none; /* For older IE */
 }
+
+.overlay {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 100;
+}

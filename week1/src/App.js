@@ -1,24 +1,20 @@
 import './App.css';
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Canvas } from "@react-three/fiber";
 import GameCanvas from './components/GameCanvas';
+import GrassModel from './components/grassModel';
 
 const size = 10;
 const cubeSize = 0.8;
 
 function App() {
-  const [reset, setReset] = useState(false);
   const [selectState, setSelectState] = useState(false);
   const [pointersIndecator, setPointersIndecator] = useState(<></>);
-  const orbitRef = useRef();
 
-  const handleReset = useCallback((value) => {
-    setReset(value);
-  }, []);
-
-  const handleSelectState = useCallback(() => {
-    setSelectState((prev) => !prev);
-  }, []);
+  const handleSelectState = () => {
+    localStorage.clear();
+    window.location.reload();
+  }
 
   const setSelectStateCallback = useCallback((value) => {
     setSelectState(value);
@@ -30,7 +26,7 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='overlay'>
         <button onClick={handleSelectState}>Reset</button>
         <div className='unselectable'>
           <p>Select State: {selectState ? 'true' : 'false'}</p>
@@ -39,10 +35,13 @@ function App() {
       </div>
       
       <Canvas>
+        <ambientLight intensity={1} />
+        <directionalLight color="red" position={[5, 0, 5]} />
         <GameCanvas 
-          size={size} cubeSize={cubeSize} orbitRef={orbitRef} canvasReset={reset} handleCanvasReset={handleReset}
+          size={size} cubeSize={cubeSize}
           selectState={selectState} setSelectState={setSelectStateCallback}
-          setPointersIndecator={setPointersIndecatorCallback}/>
+          setPointersIndecator={setPointersIndecatorCallback}
+        />
       </Canvas>
     </>
   );
